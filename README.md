@@ -45,8 +45,6 @@ TMP_DIR="/tmp/certbot-hetzner"           # temporary file storage
 mkdir -p "$TMP_DIR"
 ```
 
-__Important:__ Never commit your real API token.
-
 # Usage with Certbot
 
 ```
@@ -60,13 +58,14 @@ certbot certonly \
 
 ### Notes
 * For __wildcard domains__, the script creates `_acme-challenge` relative to the zone.
-* For __subdomains__ (e.g., sub.example.com), the script creates `_acme-challenge.sub_` so that Hetzner resolves `_acme-challenge.sub.example.com`.
+* For __subdomains__ (e.g., sub.example.com), the script creates `_acme-challenge.sub` so that Hetzner resolves `_acme-challenge.sub.example.com`.
 * Automatic zone detection ensures the correct zone is used even for CNAMEs.
-* The `--manual-public-ip-logging-ok` flag may be required for unattended runs with manual hooks:
 
 ```
-certbot renew \hook /path/to/auth-hook.sh \nup-hook /path/to/cleanup-hook.sh \
-  --manual-public-ip-logging-ok
+certbot renew \
+ --manual \
+ --manual-auth-hook /path/to/auth-hook.sh \
+ --manual-cleanup-hook /path/to/cleanup-hook.sh
 ```
 
 ## Testing without Certbot
